@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 
-const baseURL = import.meta.env.VITE_BASE_URL || "http://localhost:5001";
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 interface Message {
   role: "user" | "assistant";
@@ -32,7 +32,7 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await axios.post(`${baseURL}/chat`, {
+      const res = await axios.post(`${API_BASE_URL}/api/chat`, {
         messages: updatedMessages,
       });
 
