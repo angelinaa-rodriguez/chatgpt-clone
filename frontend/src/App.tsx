@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
+
+const baseURL = import.meta.env.VITE_BASE_URL || "http://localhost:5001";
 
 interface Message {
   role: "user" | "assistant";
@@ -29,17 +32,11 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: updatedMessages }),
+      const res = await axios.post(`${baseURL}/chat`, {
+        messages: updatedMessages,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error || "Request failed");
-
-      setMessages([...updatedMessages, data.reply]);
+      setMessages([...updatedMessages, res.data.reply]);
     } catch (err) {
       setMessages([
         ...updatedMessages,
